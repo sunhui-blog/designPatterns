@@ -12,7 +12,7 @@ var mySingleton = function () {
 
   // here are our private methods and variables
   var privateVariable = "something private";
-  
+
   function showPrivate() {
     console.log(privateVariable)
   }
@@ -41,10 +41,10 @@ var Singleton = (function () {
       publicProperty: "test"
     }
   }
-  
+
   return {
     getInstance: function () {
-      if(!instantiated) {
+      if (!instantiated) {
         instantiated = init();
       }
       return instantiated;
@@ -55,7 +55,7 @@ var Singleton = (function () {
 Singleton.getInstance().publicMethod();
 
 // best useful
-var SingletonTester = (function() {
+var SingletonTester = (function () {
   function Singleton(options) {
     options = options || {};
     this.name = 'SingletonTester';

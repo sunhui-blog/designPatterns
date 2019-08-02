@@ -1,107 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
-</head>
-<body>
-  <div class="box">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+  </head>
+  <body>
+    <div class="box">
       <div id="dialogExample"></div>
-  </div>
-  <button onclick="openDialog()">打开</button>
-  <button onclick="closeDialog()">关闭</button>
-<script>
-  function dialog(option) {
-    this.title = option.title
-    this.id = option.id
-    this.context = option.context
-    this.open = false
-  };
-
-  dialog.prototype.create = function () {
-    if(!this.open){
-      var modal = document.getElementById(this.id)
-      modal.innerHTML = this.context
-      this.modal = modal
-      this.modal.style.display = "none"
-    }
-  }
-
-  dialog.prototype.openItem = function () {
-    this.open = true
-    this.modal.style.display = "inline"
-  };
-
-  dialog.prototype.close = function () {
-    this.open = false
-    this.modal.style.display = "none"
-  };
-
-  var creatDialog = (function() {
-    var instance;
-    return {
-      getDialog: function(option){
-        if(!instance){
-          instance = new dialog(option);
-        }
-        return instance
+    </div>
+    <button onclick="openDialog()">打开</button>
+    <button onclick="closeDialog()">关闭</button>
+    <script>
+      function dialog(option) {
+        this.title = option.title;
+        this.id = option.id;
+        this.context = option.context;
+        this.open = false;
       }
-    }
-  })();
 
-   // 具体弹框实例化例子
-  var dialogExample = {
-    setModal: null,
-    create: function (option) {
-      this.setModal = creatDialog.getDialog(option)
-      this.setModal.create();
-    },
-    open: function () {
-      this.setModal.openItem();
-    },
-    close: function () {
-      this.setModal.close();
-    }
-  }
-  
-  dialogExample.create({title:"hello", 
-    id:"dialogExample",
-    context:"<div class='dialog-context'>这是一个弹框！</div>"})
+      dialog.prototype.create = function() {
+        if (!this.open) {
+          var modal = document.getElementById(this.id);
+          modal.innerHTML = this.context;
+          this.modal = modal;
+          this.modal.style.display = 'none';
+        }
+      };
 
-  function openDialog() {
-    dialogExample.open();
-  }
+      dialog.prototype.openItem = function() {
+        this.open = true;
+        this.modal.style.display = 'inline';
+      };
 
-  function closeDialog() {
-    dialogExample.close();
-  }
+      dialog.prototype.close = function() {
+        this.open = false;
+        this.modal.style.display = 'none';
+      };
 
-</script>
+      var creatDialog = (function() {
+        var instance;
+        return {
+          getDialog: function(option) {
+            if (!instance) {
+              instance = new dialog(option);
+            }
+            return instance;
+          }
+        };
+      })();
 
-<style type="text/css">
-.box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-.dialog-context {
-  width: 400px;
-  height: 200px;
-  text-align: center;
-  line-height: 50px;
-  position: fixed;
-  margin-left: -200px;
-  border: 1px solid #ccc;
-  background: #fff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-  transition: all .2s ease;
-  z-index: 999;
-}
-</style>
-</body>
+      // 具体弹框实例化例子
+      var dialogExample = {
+        setModal: null,
+        create: function(option) {
+          this.setModal = creatDialog.getDialog(option);
+          this.setModal.create();
+        },
+        open: function() {
+          this.setModal.openItem();
+        },
+        close: function() {
+          this.setModal.close();
+        }
+      };
+
+      dialogExample.create({
+        title: 'hello',
+        id: 'dialogExample',
+        context: "<div class='dialog-context'>这是一个弹框！</div>"
+      });
+
+      function openDialog() {
+        dialogExample.open();
+      }
+
+      function closeDialog() {
+        dialogExample.close();
+      }
+    </script>
+
+    <style type="text/css">
+      .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+      .dialog-context {
+        width: 400px;
+        height: 200px;
+        text-align: center;
+        line-height: 50px;
+        position: fixed;
+        margin-left: -200px;
+        border: 1px solid #ccc;
+        background: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        transition: all 0.2s ease;
+        z-index: 999;
+      }
+    </style>
+  </body>
 </html>
