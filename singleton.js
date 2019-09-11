@@ -1,4 +1,3 @@
-// the simplest form
 var mySingleton = {
   property1: "something",
   property2: "something else",
@@ -7,16 +6,14 @@ var mySingleton = {
   }
 }
 
-// the further
 var mySingleton = function () {
 
-  // here are our private methods and variables
   var privateVariable = "something private";
 
   function showPrivate() {
     console.log(privateVariable)
   }
-  // public variables and methods (which can access private variables and methods )
+
   return {
     publicMethod: function () {
       showPrivate();
@@ -27,8 +24,8 @@ var mySingleton = function () {
 }
 
 var single = mySingleton();
-single.publicMethod();  // logs 'something private'
-console.log(single.publicVar)  // logs 'the public can see this!'
+single.publicMethod();
+console.log(single.publicVar);
 
 var Singleton = (function () {
   var instantiated;
@@ -54,7 +51,6 @@ var Singleton = (function () {
 
 Singleton.getInstance().publicMethod();
 
-// best useful
 var SingletonTester = (function () {
   function Singleton(options) {
     options = options || {};
