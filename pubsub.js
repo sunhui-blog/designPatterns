@@ -67,12 +67,12 @@ console.log(mailCount) // mailCount = 2
 
 const message = new Pubsub()
 
-message.subscribe('weather', function (topic, args) {
+const A = message.subscribe('weather', function (topic, args) {
   console.log(topic)
   console.info(args)
 })
 
-message.subscribe('weather', function (topic, args) {
+const B = message.subscribe('weather', function (topic, args) {
   console.log(topic)
   console.info(args)
 })
