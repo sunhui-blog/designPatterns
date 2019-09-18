@@ -38,4 +38,17 @@ const event = new Events()
 
 event.on('sayHello', () => { console.log('hello') })
 
-event.emit()
+event.emit('sayHello') // ‘hello’
+
+event.emit('sayHello') // ‘hello’
+
+event.off('sayHello')
+
+event.emit('sayHello') // 不打印
+
+event.one('sayHello', () => { console.log('one') })
+
+event.emit('sayHello')
+
+event.emit('sayHello')
+
