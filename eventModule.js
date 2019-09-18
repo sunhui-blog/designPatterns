@@ -46,9 +46,9 @@ event.off('sayHello')
 
 event.emit('sayHello') // 不打印
 
-event.one('sayHello', () => { console.log('one') })
+event.one('sayOne', () => { console.log('one') })
 
-event.emit('sayHello')
+event.emit('sayOne') // 'one'
 
-event.emit('sayHello')
+event.emit('sayOne') // 不打印
 
