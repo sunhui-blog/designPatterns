@@ -138,3 +138,5 @@ event.$once('sayOne', () => { console.log('one') })
 event.$emit('sayOne')
 
 event.$emit('sayOne')
+
+event.$off() // _listeners = {}
