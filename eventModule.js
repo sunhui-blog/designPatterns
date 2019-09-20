@@ -1,54 +1,142 @@
 class Events {
   constructor () {
-    this.store = {}
-    this.onceKey = []
+    this._listeners = Object.create(null)
   }
 
-  // 订阅事件
-  on (key, fn) {
-    !this.store[key] && (this.store[key] = [])
-    this.store[key].push(fn)
+  /**
+  * @method on
+  * @description 订阅事件
+  * @public
+  * @param {String} event 绑定事件
+  * @param {Function} fn 绑定方法
+  */
+  $on (event, fn) {
+    if (Array.isArray(event)) {
+      event.map(v => { this.$on(v, fn) })
+    }
+
+    !this._listeners[event] && (this._listeners[event] = [])
+    // console.log(fn)
+    this._listeners[event].push(fn)
+    
+    return this
   }
 
-  // 取消事件
-  off (key) {
-    this.store[key] && this.store[key] && (this.store[key] = [])
-  }
+  /**
+  * @method off
+  * @description 移除事件
+  * @public
+  * @param {String} event 取消绑定事件
+  * @param {Function} fn 取消绑定方法
+  */
+  $off (event, fn) {
+    const vm = this
 
-  // 事件单次执行
-  one (key, fn) {
-    !this.store[key] && this.on(key, fn)
-    this.onceKey.push(key)
-  }
+    if (!arguments.length) {
+      this._listeners = Object.create(null)
+      return vm
+    }
 
-  // 发布事件
-  emit (key, ...args) {
-    if (this.store[key]) {
-      this.store[key].forEach(fn => fn.apply(null, args))
-      if (this.onceKey.includes(key)) {
-        this.store[key] = []
-        this.onceKey = this.onceKey.filter(item => item !== key)
+    if (Array.isArray(event)) {
+      event.map(v => this.$off(v, fn))
+      return vm
+    }
+
+    let e = vm._listeners[event]
+
+    if (!e) {
+      return vm
+    }
+
+    if (!fn) {
+      vm._listeners[event] = null
+      return vm
+    }
+
+    let i = e.length
+    
+    while (i--) {
+      // fn 的 取消 得看一下
+      if (e[i] === fn || e[i].fn === fn) {
+        e.splice(i, 1)
+        break
       }
+    }
+
+    return vm
+  }
+
+  /**
+  * @method once
+  * @description 一次执行事件
+  * @public
+  * @param {String} event 绑定事件
+  * @param {Function} fn 绑定方法
+  */
+  $once (event, fn) {
+    var vm = this;
+    
+    function on () {
+      vm.$off(event, on);
+      fn.apply(vm, arguments);
+    }
+    
+    on.fn = fn;
+    
+    vm.$on(event, on);
+    
+    return vm
+  }
+
+  /**
+  * @method emit
+  * @description 发布事件
+  * @public
+  * @param {String} event 绑定事件
+  * @param {Function} fn 绑定方法
+  */
+  $emit (event) {
+    let events = this._listeners[event]
+    if (events) {
+      events = events.length > 1 ? toArray(events) : events
+      let args = toArray(arguments, 1)
+      events.map(e => {
+        args.length ? e.apply(this, args) : e.call(this)
+      })
     }
   }
 }
 
+function toArray(list, start) {
+  start = start || 0
+  let i = list.length - start
+  let ret = new Array(i)
+  while (i--) {
+    ret[i] = list[i + start]
+  }
+  return ret
+}
+
 const event = new Events()
 
+const say = function (people) {
+  console.log(people + ': 123')
+}
 
-event.on('sayHello', () => { console.log('hello') })
+event.$on('sayHello', say)
 
-event.emit('sayHello') // ‘hello’
+event.$on('sayHello', (people) => { console.log(people + ': hello') })
 
-event.emit('sayHello') // ‘hello’
+event.$emit('sayHello', 'liming')
 
-event.off('sayHello')
+event.$on('sayYes', () => { console.log('yes') })
 
-event.emit('sayHello') // 不打印
+event.$emit('sayYes')
 
-event.one('sayOne', () => { console.log('one') })
+event.$off('sayHello', say)
 
-event.emit('sayOne') // 'one'
+event.$once('sayOne', () => { console.log('one') })
 
-event.emit('sayOne') // 不打印
+event.$emit('sayOne')
 
+event.$emit('sayOne')
