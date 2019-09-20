@@ -16,7 +16,7 @@ class Events {
     }
 
     !this._listeners[event] && (this._listeners[event] = [])
-    // console.log(fn)
+
     this._listeners[event].push(fn)
     
     return this
