@@ -56,7 +56,6 @@ class Events {
     let i = e.length
     
     while (i--) {
-      // fn 的 取消 得看一下
       if (e[i] === fn || e[i].fn === fn) {
         e.splice(i, 1)
         break
