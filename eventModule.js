@@ -97,7 +97,6 @@ class Events {
   $emit (event) {
     let events = this._listeners[event]
     if (events) {
-      events = events.length > 1 ? toArray(events) : events
       let args = toArray(arguments, 1)
       events.map(e => {
         args.length ? e.apply(this, args) : e.call(this)
